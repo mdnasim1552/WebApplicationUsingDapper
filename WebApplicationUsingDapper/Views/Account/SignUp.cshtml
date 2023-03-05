@@ -14,7 +14,7 @@
                 <h1 class="text-info">Registration Form</h1>
             </div>
             <h3 class="text-danger text-center">@TempData["ErrorMessage"]</h3>
-            <form method="post" asp-action="SignUp" asp-controller="Account">
+            <form method="post" asp-action="SignUp" asp-controller="Account" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label asp-for="fName"></label>
                     <input type="text" asp-for="fName" class="form-control" placeholder="first name"/>
@@ -57,13 +57,13 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="userImg"></label>
-                    <input type="text" asp-for="userImg" class="form-control" placeholder="Upload your photo" accept="image/*"/>
+                    <input type="file" asp-for="userImg" class="form-control" placeholder="Upload your photo" accept="image/*"/>
                     @*<span asp-validation-for="userImg" class="text-danger"></span>*@
 
                 </div>
                 <div class="mb-3">
                     <label asp-for="userCV"></label>
-                    <input type="text" asp-for="userCV" class="form-control" placeholder="Upload your cv" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                    <input type="file" asp-for="userCV" class="form-control" placeholder="Upload your cv" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                     @*<span asp-validation-for="userCV" class="text-danger"></span>*@
 
                 </div>

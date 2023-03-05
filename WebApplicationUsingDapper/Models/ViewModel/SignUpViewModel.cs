@@ -29,11 +29,11 @@ namespace WebApplicationUsingDapper.Models.ViewModel
 
         //[Required]
         [Display(Name = "Upload Image")]
-        public string userImg { get; set; }
+        public IFormFile? userImg { get; set; }
 
         //[Required]
         [Display(Name = "Upload CV")]
-        public string userCV { get; set; }
+        public IFormFile? userCV { get; set; }
 
         [Required]
         [Display(Name = "Enter Password")]

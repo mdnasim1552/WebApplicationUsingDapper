@@ -1,0 +1,35 @@
+﻿@model WebApplicationUsingDapper.Models.ViewModel.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-4 offset-4 border rounded p-3">
+            <form method="post" asp-action="Login" asp-controller="Account">
+                <div class="mb-3">
+                    <label asp-for="email"></label>
+                    <input type="email" asp-for="email" class="form-control" placeholder="email address"/>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="password"></label>
+                    <input type="password" asp-for="password" class="form-control" placeholder="password" />
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn w-100 btn-primary mb-2" value="Login" />
+                </div>
+                <div class="text-center">
+                    <a class="text-primary" asp-action="">Forgot Password?</a>
+                </div>
+                <div class="line"></div>
+            </form>
+            <div class="mb-3 text-center">
+                <form asp-controller="Account" asp-action="SignUp" method="get">
+                    <input type="submit" class="btn btn-success w-50" value="Register" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

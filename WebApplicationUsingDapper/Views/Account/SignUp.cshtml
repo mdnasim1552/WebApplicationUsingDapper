@@ -1,0 +1,130 @@
+﻿@model WebApplicationUsingDapper.Models.ViewModel.SignUpViewModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+@{
+    var options = new List<string> { "Male", "Female", "Other" };
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3 border p-3">
+            <div class="text-center">
+                <h1 class="text-info">Registration Form</h1>
+            </div>
+            <h3 class="text-danger text-center">@TempData["ErrorMessage"]</h3>
+            <form method="post" asp-action="SignUp" asp-controller="Account">
+                <div class="mb-3">
+                    <label asp-for="fName"></label>
+                    <input type="text" asp-for="fName" class="form-control" placeholder="first name"/>
+                    <span asp-validation-for="fName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="lName"></label>
+                    <input type="text" asp-for="lName" class="form-control" placeholder="last name"/>
+                    <span asp-validation-for="lName" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="phoneNo"></label>
+                    <input type="number" asp-for="phoneNo" class="form-control" placeholder="phone number"/>
+                    <span asp-validation-for="phoneNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="emailNo"></label>
+                    <input type="email" asp-for="emailNo" class="form-control" placeholder="email address" />
+                    <span asp-validation-for="emailNo" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select class="form-control" id="userCountry" name="CountryId">
+                        <option value="">-- Select Country --</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.countryId">@country.countryName</option>
+                        }
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label asp-for="userCity" class="control-label"></label>
+                    <select asp-for="userCity" class="form-control" id="userCity">
+                        <option value="">-- Select City --</option>
+                    </select>
+                    <span asp-validation-for="userCity" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="userImg"></label>
+                    <input type="text" asp-for="userImg" class="form-control" placeholder="Upload your photo" accept="image/*"/>
+                    @*<span asp-validation-for="userImg" class="text-danger"></span>*@
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="userCV"></label>
+                    <input type="text" asp-for="userCV" class="form-control" placeholder="Upload your cv" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                    @*<span asp-validation-for="userCV" class="text-danger"></span>*@
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="password"></label>
+                    <input type="password" asp-for="password" class="form-control" placeholder="password"/>
+                    <span asp-validation-for="password" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="confirmPassword"></label>
+                    <input type="password" asp-for="confirmPassword" class="form-control" placeholder="re-enter password"/>
+                    <span asp-validation-for="confirmPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="dob"></label>
+                    <input type="date" asp-for="dob" class="form-control" data-val-required="Please enter your birthdate" />
+                    <span asp-validation-for="dob" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    @*<label asp-for="Gender"></label>*@
+                    @*<input type="text" asp-for="Gender" class="form-control" placeholder="Gender"/>*@
+                    
+                    <label for="options" asp-for="Gender">Gender</label>
+                    <select id="options" class="form-control" data-val="true" data-val-required="Please select your gender" name="Gender">
+                        <option value="">--Select Gender--</option>
+                        @foreach (var option in @options)
+                        {
+                            <option>@option</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger" name="Gender"></span>
+
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-success btn-lg mb-1" value="Registration"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(function () {
+        $("#userCountry").change(function () {
+            var countryId = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "/Account/LoadCities",
+                data: { countryId: countryId },
+                success: function (data) {
+                    var citySelect = $("#userCity");
+                    citySelect.empty();
+                    citySelect.append($('<option></option>').val('').text('-- Select City --'));
+                    $.each(data, function (index, city) {
+                        citySelect.append($('<option></option>').val(city.value).text(city.text));
+                    });
+                }
+            });
+        });
+    });
+</script>

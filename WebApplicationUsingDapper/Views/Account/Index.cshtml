@@ -1,0 +1,12 @@
+﻿@model List<WebApplicationUsingDapper.Models.Account.User>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@foreach (var user in Model)
+{
+    <div>@user.fName @user.lName @user.dob</div>
+}
+
+

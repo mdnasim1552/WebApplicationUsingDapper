@@ -6,7 +6,7 @@ namespace WebApplicationUsingDapper.Repository
     {
         User FindById(int id);
         List<User> GetAll();
-        void AddUser(User user);
+        Task AddUserAsync(User user);
         User UpdateUser(User user);
         void RemoveUser(int id);
     }

@@ -31,28 +31,44 @@ namespace WebApplicationUsingDapper.Repository
             var sql = "select * from TblUsers";
             return _connection.Query<User>(sql).ToList();
         }
-
-        public void AddUser(User user)
-        {
-            var sql =
-                "insert into TblUsers(fName,lName,phoneNo,emailNo,userCity,userImg,userCV,password,dob) values(@fName,@lName,@phoneNo,@emailNo,@userCity,@userImg,@userCV,@password,CONVERT(datetime, @dob))"
-                + "select cast(SCOPE_IDENTITY() as int)";
-            var id = _connection.Query<int>(sql, new
-            {
-                user.fName,
-                user.lName,
-                user.phoneNo,
-                user.emailNo,
-                user.userCity,
-                user.userImg,
-                user.userCV,
-                user.password,
-                user.dob
-
-            }).Single();
-            //user.userId = id;
-            //return user;
+        public async Task AddUserAsync(User user)
+        {       
+            var parameters = new DynamicParameters();
+            parameters.Add("@gender", user.gender);
+            parameters.Add("@fName", user.fName);
+            parameters.Add("@lName", user.lName);
+            parameters.Add("@phoneNo", user.phoneNo);
+            parameters.Add("@emailNo", user.emailNo);
+            parameters.Add("@userCity", user.userCity);
+            parameters.Add("@userImg", user.userImg);
+            parameters.Add("@userCV", user.userCV);
+            parameters.Add("@password", user.password);
+            parameters.Add("@dob", user.dob,DbType.DateTime);
+            await _connection.ExecuteAsync("InsertTblUsersRecordByGender", parameters, commandType: CommandType.StoredProcedure);
         }
+
+        //public void AddUser(User user)
+        //{
+        //    //CONVERT(datetime, @dob)
+        //    var sql =
+        //        "insert into TblUsers(fName,lName,phoneNo,emailNo,userCity,userImg,userCV,password,dob) values(@fName,@lName,@phoneNo,@emailNo,@userCity,@userImg,@userCV,@password,@dob)"
+        //        + "select cast(SCOPE_IDENTITY() as int)";
+        //    var id = _connection.Query<int>(sql, new
+        //    {
+        //        user.fName,
+        //        user.lName,
+        //        user.phoneNo,
+        //        user.emailNo,
+        //        user.userCity,
+        //        user.userImg,
+        //        user.userCV,
+        //        user.password,
+        //        user.dob
+
+        //    }).Single();
+        //    //user.userId = id;
+        //    //return user;
+        //}
 
         public User UpdateUser(User user)
         {

@@ -23,7 +23,7 @@
                 <div class="mb-3">
                     <label asp-for="lName"></label>
                     <input type="text" asp-for="lName" class="form-control" placeholder="last name"/>
-                    <span asp-validation-for="lName" class="text-danger"></span>
+                    @*<span asp-validation-for="lName" class="text-danger"></span>*@
 
                 </div>
                 <div class="mb-3">
@@ -53,7 +53,7 @@
                     <select asp-for="userCity" class="form-control" id="userCity">
                         <option value="">-- Select City --</option>
                     </select>
-                    <span asp-validation-for="userCity" class="text-danger"></span>
+                    @*<span asp-validation-for="userCity" class="text-danger"></span>*@
                 </div>
                 <div class="mb-3">
                     <label asp-for="userImg"></label>
@@ -80,14 +80,14 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="dob"></label>
-                    <input type="date" asp-for="dob" class="form-control" data-val-required="Please enter your birthdate" />
-                    <span asp-validation-for="dob" class="text-danger"></span>
+                    <input type="date" asp-for="dob" class="form-control" value="@Model.dob?.ToString("yyyy-MM-dd")"/>
+                    @*<span asp-validation-for="dob" class="text-danger"></span>*@
                 </div>
                 <div class="mb-3">
                     @*<label asp-for="Gender"></label>*@
                     @*<input type="text" asp-for="Gender" class="form-control" placeholder="Gender"/>*@
                     
-                    <label for="options" asp-for="Gender">Gender</label>
+                    <label for="options" asp-for="gender">Gender</label>
                     <select id="options" class="form-control" data-val="true" data-val-required="Please select your gender" name="Gender">
                         <option value="">--Select Gender--</option>
                         @foreach (var option in @options)
@@ -95,7 +95,7 @@
                             <option>@option</option>
                         }
                     </select>
-                    <span asp-validation-for="Gender" class="text-danger" name="Gender"></span>
+                    <span asp-validation-for="gender" class="text-danger" name="Gender"></span>
 
                 </div>
                 <div class="mb-3">

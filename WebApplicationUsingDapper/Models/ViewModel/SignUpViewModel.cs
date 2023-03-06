@@ -4,15 +4,15 @@ namespace WebApplicationUsingDapper.Models.ViewModel
 {
     public class SignUpViewModel
     {
-        public int userId { get; set; }
+        public string? userId { get; set; }
 
         [Required]
         [Display(Name="First Name")]
         public string fName { get; set; }
 
-        [Required]
+        
         [Display(Name = "Last Name")]
-        public string lName { get; set; }
+        public string? lName { get; set; }
 
         [Required]
         [Display(Name = "Phone Number")]
@@ -25,7 +25,7 @@ namespace WebApplicationUsingDapper.Models.ViewModel
         public string emailNo { get; set; }
 
         [Display(Name = "City")]
-        public string userCity { get; set; }
+        public string? userCity { get; set; }
 
         //[Required]
         [Display(Name = "Upload Image")]
@@ -44,16 +44,15 @@ namespace WebApplicationUsingDapper.Models.ViewModel
         [Compare("password", ErrorMessage = "Passwords do not match")]
         public string confirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Please enter your birthdate")]
         [Display(Name = "Birth Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        
+
         public DateTime? dob { get; set; }
 
-        
+        [Required]
         [Display(Name = "Gender")]
-        public string Gender { get; set; }
+        public string gender { get; set; }
 
         public List<Country> Countries { get; set; }= new List<Country>();
         public List<City> Cities { get; set; }=new List<City>();

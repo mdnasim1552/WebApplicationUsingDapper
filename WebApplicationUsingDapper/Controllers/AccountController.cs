@@ -54,6 +54,7 @@ namespace WebApplicationUsingDapper.Controllers
                 // Create a new User object with the byte arrays for userImg and userCV
                 var data = new User() 
                 { 
+                    gender=model.gender,
                     fName = model.fName,
                     lName = model.lName,
                     phoneNo = model.phoneNo,
@@ -66,7 +67,8 @@ namespace WebApplicationUsingDapper.Controllers
                 };
         
                 // Add the new User object to the database
-                _userRepository.AddUser(data);
+                //_userRepository.AddUser(data);
+                _userRepository.AddUserAsync(data);
         
                 return RedirectToAction("Login");
             }

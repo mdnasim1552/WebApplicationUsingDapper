@@ -7,11 +7,13 @@ namespace WebApplicationUsingDapper.Models.ViewModel
     {
         [Required]
         [Display(Name = "Email Address")]
-        public string email { get; set; }
+        public string emailNo { get; set; }
 
         [Required]
         [Display(Name = "Enter Password")]
         public string password { get; set; }
+        [Display(Name ="Remember Me")]
+        public bool IsRemember { get; set; }=false;
 
     }
 }

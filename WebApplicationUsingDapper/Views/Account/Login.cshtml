@@ -8,12 +8,18 @@
         <div class="col-4 offset-4 border rounded p-3">
             <form method="post" asp-action="Login" asp-controller="Account">
                 <div class="mb-3">
-                    <label asp-for="email"></label>
-                    <input type="email" asp-for="email" class="form-control" placeholder="email address"/>
+                    <label asp-for="emailNo"></label>
+                    <input type="email" asp-for="emailNo" class="form-control" placeholder="email address"/>
+                    <span class="text-danger">@TempData["ErrorMessage"]</span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="password"></label>
                     <input type="password" asp-for="password" class="form-control" placeholder="password" />
+                    <span class="text-danger">@TempData["ErrorMessage"]</span>
+                </div>
+                <div class="mb-3">                 
+                    <input type="checkbox" asp-for="IsRemember"/>
+                    <label asp-for="IsRemember"></label>
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn w-100 btn-primary mb-2" value="Login" />

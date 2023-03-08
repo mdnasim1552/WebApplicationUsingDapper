@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using WebApplicationUsingDapper.Models;
 using WebApplicationUsingDapper.Models.Account;
 using WebApplicationUsingDapper.Models.ViewModel;
 using WebApplicationUsingDapper.Repository;
+
 
 namespace WebApplicationUsingDapper.Controllers
 {
@@ -26,14 +30,64 @@ namespace WebApplicationUsingDapper.Controllers
             var users = _userRepository.GetAll();
             return View(users);
         }
-        [HttpPost]
+        
         public IActionResult Login()
         {
             return View();
         }
-        public IActionResult Login(LoginViewModel model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = _userRepository.GetAll().Where(u => u.emailNo == model.emailNo).SingleOrDefault();
+                if (user != null)
+                {
+                    bool passwordMatches = BCrypt.Net.BCrypt.Verify(model.password, user.password);
+                    if (passwordMatches)
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, user.emailNo),
+                            new Claim(ClaimTypes.Name, $"{user.fName} {user.lName}")
+                        };
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = model.IsRemember
+                        };
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity),
+                            authProperties);
+
+                        return RedirectToAction("Index", "Account");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Invalid password!";
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Username not found";
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View();
+            }   
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult SignUp()
         {
@@ -50,7 +104,9 @@ namespace WebApplicationUsingDapper.Controllers
         {
             if (ModelState.IsValid)
             {
-        
+                string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.password, salt);
+
                 // Create a new User object with the byte arrays for userImg and userCV
                 var data = new User() 
                 { 
@@ -62,12 +118,9 @@ namespace WebApplicationUsingDapper.Controllers
                     userCity = model.userCity,
                     userImg = UploadUserImage(model.userImg),
                     userCV = UploadUserCV(model.userCV),
-                    password = model.password,
+                    password = hashedPassword,
                     dob = model.dob
-                };
-        
-                // Add the new User object to the database
-                //_userRepository.AddUser(data);
+                };  
                 _userRepository.AddUserAsync(data);
         
                 return RedirectToAction("Login");

@@ -10,12 +10,14 @@
                 <div class="mb-3">
                     <label asp-for="emailNo"></label>
                     <input type="email" asp-for="emailNo" class="form-control" placeholder="email address"/>
-                    <span class="text-danger">@TempData["ErrorMessage"]</span>
+                    <span class="text-danger">@TempData["ErrorUsername"]</span>
+                    <span asp-validation-for="emailNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="password"></label>
                     <input type="password" asp-for="password" class="form-control" placeholder="password" />
-                    <span class="text-danger">@TempData["ErrorMessage"]</span>
+                    <span class="text-danger">@TempData["ErrorPassword"]</span>
+                    <span asp-validation-for="password" class="text-danger"></span>
                 </div>
                 <div class="mb-3">                 
                     <input type="checkbox" asp-for="IsRemember"/>
@@ -37,5 +39,11 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
 
 

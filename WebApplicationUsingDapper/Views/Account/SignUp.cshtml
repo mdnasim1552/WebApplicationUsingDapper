@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-6 offset-3 border p-3 rounded" >
+        <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 border p-3 rounded">
             <div class="text-center">
                 <h1 class="text-success">Registration Form</h1>
             </div>
@@ -128,3 +128,9 @@
         });
     });
 </script>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

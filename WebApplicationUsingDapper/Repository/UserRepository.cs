@@ -26,6 +26,20 @@ namespace WebApplicationUsingDapper.Repository
 
         }
 
+        public User GetUserByEmailAsync(string emailNo)
+        {
+            var sql = "select * from TblUsers where emailNo=@emailNo";
+            //return _connection.QuerySingleOrDefault<User>(sql,new {@id=id});
+            return _connection.Query<User>(sql, new { @emailNo = emailNo }).SingleOrDefault();           
+        }
+
+        public User GetUserByPhoneAsync(string phoneNo)
+        {
+            var sql = "select * from TblUsers where phoneNo=@phoneNo";
+            //return _connection.QuerySingleOrDefault<User>(sql,new {@id=id});
+            return _connection.Query<User>(sql, new { @phoneNo = phoneNo }).SingleOrDefault();
+        }
+
         public List<User> GetAll()
         {
             var sql = "select * from TblUsers";

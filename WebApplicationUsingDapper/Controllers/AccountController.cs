@@ -49,7 +49,7 @@ namespace WebApplicationUsingDapper.Controllers
                     {
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, user.emailNo),
+                            new Claim(ClaimTypes.NameIdentifier, user.userId),
                             new Claim(ClaimTypes.Name, $"{user.fName} {user.lName}")
                         };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -66,13 +66,13 @@ namespace WebApplicationUsingDapper.Controllers
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Invalid password!";
+                        TempData["ErrorPassword"] = "Invalid password!";
                         return View(model);
                     }
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Username not found";
+                    TempData["ErrorUsername"] = "Username not found";
                     return View(model);
                 }
             }
@@ -104,6 +104,18 @@ namespace WebApplicationUsingDapper.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_userRepository.GetUserByPhoneAsync(model.phoneNo) != null)
+                {
+                    ModelState.AddModelError("phoneNo", "Phone number already exists");
+                    model.Countries = _countryRepository.GetAll();
+                    return View(model);
+                }
+                if (_userRepository.GetUserByEmailAsync(model.emailNo) != null)
+                {
+                    ModelState.AddModelError("emailNo", "Email already exists");
+                    model.Countries = _countryRepository.GetAll();
+                    return View(model);
+                }
                 string salt = BCrypt.Net.BCrypt.GenerateSalt();
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.password, salt);
 
